@@ -45,7 +45,7 @@ export const useAuthStore = defineStore('auth', () => {
       // If proxy or network issues occur, retry against backend directly.
       try {
         const directResponse = await axios.post(
-          'http://localhost:8002/api/auth/login/',
+          '/api/auth/login/',
           { username, password },
           { headers: { 'Content-Type': 'application/json' } }
         )
