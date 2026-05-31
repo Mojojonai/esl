@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import axios from 'axios'
 import { authAPI } from '../services/api'
 
 export const useAuthStore = defineStore('auth', () => {
@@ -41,8 +42,20 @@ export const useAuthStore = defineStore('auth', () => {
       setAuthData(newToken, newUser, profileData)
       return response.data
     } catch (err) {
-      error.value = err.response?.data?.detail || 'Login failed'
-      throw err
+      // If proxy or network issues occur, retry against backend directly.
+      try {
+        const directResponse = await axios.post(
+          'http://localhost:8002/api/auth/login/',
+          { username, password },
+          { headers: { 'Content-Type': 'application/json' } }
+        )
+        const { token: newToken, user: newUser, profile: profileData } = directResponse.data
+        setAuthData(newToken, newUser, profileData)
+        return directResponse.data
+      } catch (directErr) {
+        error.value = directErr.response?.data?.detail || err.response?.data?.detail || 'Login failed'
+        throw directErr
+      }
     } finally {
       isLoading.value = false
     }
