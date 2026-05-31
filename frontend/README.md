@@ -56,7 +56,7 @@ npm install
 npm run dev
 ```
 
-App runs at `http://localhost:5173`
+App runs at `http://localhost:5175`
 
 The Vite dev server proxies API requests to the backend (`http://localhost:8000/api`).
 
@@ -221,7 +221,7 @@ npm install
 npm run dev
 ```
 
-Visit `http://localhost:5173` and login with:
+Visit `http://localhost:5175` and login with:
 - Username: `learner1`
 - Password: `learner123`
 
